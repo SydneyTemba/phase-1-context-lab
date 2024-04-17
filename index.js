@@ -1,4 +1,76 @@
 /* Your Code Here */
+/* Your Code Here */
+
+function createEmployeeRecord(employeeData) {
+    return {
+        firstName: employeeData[0],
+        familyName: employeeData[1],
+        title: employeeData[2],
+        payPerHour: employeeData[3],
+        timeInEvents: [],
+        timeOutEvents: []
+    };
+}
+
+function createEmployeeRecords(employeesData) {
+    return employeesData.map(createEmployeeRecord);
+}
+
+function createTimeInEvent(dateStamp) {
+    const [date, hour] = dateStamp.split(" ");
+    this.timeInEvents.push({
+        type: "TimeIn",
+        hour: parseInt(hour, 10),
+        date: date
+    });
+    return this;
+}
+
+function createTimeOutEvent(dateStamp) {
+    const [date, hour] = dateStamp.split(" ");
+    this.timeOutEvents.push({
+        type: "TimeOut",
+        hour: parseInt(hour, 10),
+        date: date
+    });
+    return this;
+}
+
+function hoursWorkedOnDate(date) {
+    const timeIn = this.timeInEvents.find(event => event.date === date);
+    const timeOut = this.timeOutEvents.find(event => event.date === date);
+    const hoursWorked = (timeOut.hour - timeIn.hour) / 100;
+    return hoursWorked;
+}
+
+function wagesEarnedOnDate(date) {
+    const hoursWorked = hoursWorkedOnDate.call(this, date);
+    const wage = this.payPerHour * hoursWorked;
+    return wage;
+}
+
+function calculateAllWagesFor() {
+    const eligibleDates = this.timeInEvents.map(function (e) {
+        return e.date
+    })
+
+    const payable = eligibleDates.reduce(function (memo, d) {
+        return memo + wagesEarnedOnDate.call(this, d)
+    }.bind(this), 0);
+
+    return payable;
+}
+
+function findEmployeeByFirstName(srcArray, firstName) {
+    return srcArray.find(employee => employee.firstName === firstName);
+}
+
+function calculatePayroll(employees) {
+    return employees.reduce(function (totalPay, employee) {
+        return totalPay + calculateAllWagesFor.call(employee);
+    }, 0);
+}
+
 
 /*
  We're giving you this function. Take a look at it, you might see some usage
